@@ -1,5 +1,5 @@
 import type React from 'react'
-import { type FC, useCallback, useEffect, useRef, useState } from 'react'
+import { type FC, useRef, useState, useEffect, useCallback } from 'react'
 import styles from '../styles/styles.module.css'
 import type {
   DXFBlock,
@@ -611,15 +611,18 @@ export const DxfViewer: FC<DxfViewerProps> = ({
     [offset, scale],
   )
 
-  const screenToWorld = (screenPoint: Point): Point => {
-    const canvas = canvasRef.current
-    if (!canvas) return screenPoint
+  const screenToWorld = useCallback(
+    (screenPoint: Point): Point => {
+      const canvas = canvasRef.current
+      if (!canvas) return screenPoint
 
-    return {
-      x: (screenPoint.x - canvas.width / 2) / scale - offset.x,
-      y: -((screenPoint.y - canvas.height / 2) / scale) - offset.y,
-    }
-  }
+      return {
+        x: (screenPoint.x - canvas.width / 2) / scale - offset.x,
+        y: -((screenPoint.y - canvas.height / 2) / scale) - offset.y,
+      }
+    },
+    [offset, scale],
+  )
 
   const drawDXF = useCallback(() => {
     const canvas = canvasRef.current
@@ -948,6 +951,51 @@ export const DxfViewer: FC<DxfViewerProps> = ({
     )
   }, [selectionAreas, setAreas])
 
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const handleWheel = (event: WheelEvent) => {
+      if (selectionAreas.length > 0) return
+
+      event.preventDefault()
+      const rect = canvas.getBoundingClientRect()
+      const scaleX = canvas.width / rect.width
+      const scaleY = canvas.height / rect.height
+
+      const mousePos = {
+        x: (event.clientX - rect.left) * scaleX,
+        y: (event.clientY - rect.top) * scaleY,
+      }
+
+      const worldPos = screenToWorld(mousePos)
+
+      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
+      const newScale = Math.max(0.1, Math.min(10, scale * scaleFactor))
+
+      setScale(newScale)
+
+      // スケール変更後の新しいワールド座標を計算
+      const newWorldPos = {
+        x: (mousePos.x - canvas.width / 2) / newScale - offset.x,
+        y: -((mousePos.y - canvas.height / 2) / newScale) - offset.y,
+      }
+
+      const newOffset = {
+        x: offset.x + (worldPos.x - newWorldPos.x),
+        y: offset.y + (worldPos.y - newWorldPos.y),
+      }
+
+      setOffset(newOffset)
+    }
+
+    canvas.addEventListener('wheel', handleWheel, { passive: false })
+
+    return () => {
+      canvas.removeEventListener('wheel', handleWheel)
+    }
+  }, [scale, offset, selectionAreas.length, screenToWorld])
+
   const loadDxfFromStore = useCallback(async () => {
     if (!file) return
 
@@ -1164,25 +1212,25 @@ export const DxfViewer: FC<DxfViewerProps> = ({
     setResizeHandle(null)
   }
 
-  const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    if (selectionAreas.length > 0) return
+  // const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
+  //   if (selectionAreas.length > 0) return
 
-    event.preventDefault()
-    const mousePos = getMousePos(event)
-    const worldPos = screenToWorld(mousePos)
+  //   event.preventDefault()
+  //   const mousePos = getMousePos(event)
+  //   const worldPos = screenToWorld(mousePos)
 
-    const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
-    const newScale = Math.max(0.1, Math.min(10, scale * scaleFactor))
+  //   const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
+  //   const newScale = Math.max(0.1, Math.min(10, scale * scaleFactor))
 
-    const newWorldPos = screenToWorld(mousePos)
-    const newOffset = {
-      x: offset.x + (worldPos.x - newWorldPos.x),
-      y: offset.y + (worldPos.y - newWorldPos.y),
-    }
+  //   const newWorldPos = screenToWorld(mousePos)
+  //   const newOffset = {
+  //     x: offset.x + (worldPos.x - newWorldPos.x),
+  //     y: offset.y + (worldPos.y - newWorldPos.y),
+  //   }
 
-    setScale(newScale)
-    setOffset(newOffset)
-  }
+  //   setScale(newScale)
+  //   setOffset(newOffset)
+  // }
 
   const getCursorStyle = () => {
     if (mode === 'pan') {
@@ -1292,7 +1340,6 @@ export const DxfViewer: FC<DxfViewerProps> = ({
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          onWheel={handleWheel}
           onContextMenu={(e) => e.preventDefault()}
         />
       </div>

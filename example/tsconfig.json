@@ -16,7 +16,9 @@
     "paths": {
       "react-dxf-viewer": ["../src"],
       "react-dxf-viewer/*": ["../src/*"]
+      // "react-dxf-viewer": ["../dist"],
+      // "react-dxf-viewer/*": ["../dist/*"]
     }
   },
-  "include": ["src", "../src"]
+  "include": ["src", "../src", "../dist"]
 }

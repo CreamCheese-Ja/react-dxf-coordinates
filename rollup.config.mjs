@@ -24,14 +24,15 @@ export default {
     }),
     commonjs(),
     postcss({
-      modules: true,
-      extract: true,
+      modules: {
+        generateScopedName: '[name]__[local]___[hash:base64:5]',
+      },
+      extract: false,
+      inject: true,
       minimize: true,
-      use: ['sass'],
     }),
     typescript({
       tsconfig: './tsconfig.json',
-      exclude: ['__tests__/**/*'],
     }),
   ],
   external: ['react', 'react-dom'],
