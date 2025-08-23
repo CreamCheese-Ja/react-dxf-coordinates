@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-dxf-viewer': path.resolve(__dirname, '../src'),
+      // 'react-dxf-viewer': path.resolve(__dirname, '../dist/index.esm.js'),
     },
   },
   optimizeDeps: {

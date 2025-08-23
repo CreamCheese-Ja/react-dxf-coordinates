@@ -159,12 +159,6 @@ npm run example
 npm run build
 ```
 
-### Running tests
-
-```bash
-npm test
-```
-
 ## 📄 Browser Support
 
 - Chrome 90+
