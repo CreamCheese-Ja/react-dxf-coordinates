@@ -10,7 +10,7 @@
 
 **A powerful, lightweight React component for viewing DXF files with interactive area selection and coordinate extraction.**
 
-[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Examples](#examples) • [Contributing](#contributing)
+[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Examples](#-examples) • [Contributing](#-contributing)
 
 </div>
 
