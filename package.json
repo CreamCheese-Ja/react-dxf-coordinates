@@ -1,6 +1,6 @@
 {
   "name": "react-dxf-coordinates",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React component for viewing DXF files with area selection and coordinate extraction",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
