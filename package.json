@@ -1,5 +1,5 @@
 {
-  "name": "react-dxf-viewer",
+  "name": "react-dxf-coordinates",
   "version": "0.1.0",
   "private": true,
   "description": "React component for viewing DXF files with area selection and coordinate extraction",
@@ -41,11 +41,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CreamCheese-Ja/react-dxf-viewer.git"
+    "url": "https://github.com/CreamCheese-Ja/react-dxf-coordinates.git"
   },
-  "homepage": "https://github.com/CreamCheese-Ja/react-dxf-viewer#readme",
+  "homepage": "https://github.com/CreamCheese-Ja/react-dxf-coordinates#readme",
   "bugs": {
-    "url": "https://github.com/CreamCheese-Ja/react-dxf-viewer/issues"
+    "url": "https://github.com/CreamCheese-Ja/react-dxf-coordinates/issues"
   },
   "engines": {
     "node": ">=22.0.0",

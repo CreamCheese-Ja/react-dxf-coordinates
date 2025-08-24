@@ -5,12 +5,12 @@ import type {
   DXFBlock,
   DXFData,
   DXFEntity,
-  DxfViewerProps,
+  DxfCoordinatesProps,
   Point,
   SelectionArea,
 } from '../types'
 
-export const DxfViewer: FC<DxfViewerProps> = ({
+export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
   file,
   controller,
   hasToolBar = true,

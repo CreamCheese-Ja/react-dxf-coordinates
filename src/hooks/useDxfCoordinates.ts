@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Area, Mode } from '../types'
 
-export const useDxfViewer = () => {
+export const useDxfCoordinates = () => {
   const [mode, setMode] = useState<Mode>('select')
   const [areas, setAreas] = useState<Area[]>([])
   const [activeAreaIndex, setActiveAreaIndex] = useState<number>(-1)
@@ -16,4 +16,4 @@ export const useDxfViewer = () => {
   }
 }
 
-export type DxfViewerHook = ReturnType<typeof useDxfViewer>
+export type DxfCoordinatesHook = ReturnType<typeof useDxfCoordinates>

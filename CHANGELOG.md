@@ -10,9 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2025-08-24
 
 ### Added
-- Initial release of React DXF Viewer
-- Interactive DXF file viewing component (`<DxfViewer />`)
-- Custom React hook for state management (`useDxfViewer`)
+- Initial release of React DXF Coordinates
+- Interactive DXF file viewing component (`<DxfCoordinates />`)
+- Custom React hook for state management (`useDxfCoordinates`)
 - Real-time coordinate tracking on mouse movement
 - Area selection functionality with drag-and-drop
 - TypeScript support with full type definitions
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modern build pipeline with Rollup and Vite
 
 ### Features
-- **DxfViewer Component**: Canvas-based interactive viewer
+- **DxfCoordinates Component**: Canvas-based interactive viewer
 - **Area Selection**: Click and drag to select rectangular areas
 - **Coordinate Extraction**: Real-time mouse coordinate tracking
 - **State Management**: Comprehensive hook with selection history
@@ -42,5 +42,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic functionality only (no zoom, pan, etc.)
 - No DXF file parsing (displays placeholder content)
 
-[Unreleased]: https://github.com/CreamCheese-Ja/react-dxf-viewer/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/CreamCheese-Ja/react-dxf-viewer/releases/tag/v0.1.0
+[Unreleased]: https://github.com/CreamCheese-Ja/react-dxf-coordinates/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/CreamCheese-Ja/react-dxf-coordinates/releases/tag/v0.1.0

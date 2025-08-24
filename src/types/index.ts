@@ -1,4 +1,4 @@
-import type { DxfViewerHook } from '../hooks/useDxfViewer'
+import type { DxfCoordinatesHook } from '../hooks/useDxfCoordinates'
 
 export interface DXFEntity {
   type: string
@@ -66,8 +66,8 @@ export interface Area {
   height: number
 }
 
-export type DxfViewerProps = {
+export type DxfCoordinatesProps = {
   file: File | null
-  controller: DxfViewerHook
+  controller: DxfCoordinatesHook
   hasToolBar?: boolean
 }
