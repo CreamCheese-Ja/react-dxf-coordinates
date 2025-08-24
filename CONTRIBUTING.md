@@ -1,6 +1,6 @@
-# Contributing to React DXF Viewer
+# Contributing to React DXF Coordinates
 
-Thank you for your interest in contributing to React DXF Viewer! We welcome contributions from everyone. This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to React DXF Coordinates! We welcome contributions from everyone. This document provides guidelines and information for contributors.
 
 ## 🤝 How to Contribute
 
@@ -14,7 +14,7 @@ There are many ways to contribute to this project:
 
 ## 🐛 Reporting Bugs
 
-Before creating a bug report, please check the [existing issues](https://github.com/CreamCheese-Ja/react-dxf-viewer/issues) to see if the problem has already been reported.
+Before creating a bug report, please check the [existing issues](https://github.com/CreamCheese-Ja/react-dxf-coordinates/issues) to see if the problem has already been reported.
 
 ### Bug Report Template
 
@@ -22,7 +22,7 @@ When filing a bug report, please include:
 
 - **Clear title** that summarizes the issue
 - **Environment details**:
-  - React DXF Viewer version
+  - React DXF Coordinates version
   - React version
   - Node.js version
   - Browser version (if applicable)
@@ -37,14 +37,14 @@ When filing a bug report, please include:
 **Bug**: Canvas not updating when selectedAreas changes
 
 **Environment**:
-- react-dxf-viewer: 1.0.0
+- react-dxf-coordinates: 1.0.0
 - React: 18.2.0
 - Node.js: 22.0.0
 - Chrome: 120.0.0
 - macOS 14.0
 
 **Steps to reproduce**:
-1. Create a DxfViewer with useDxfViewer hook
+1. Create a DxfCoordinates with useDxfCoordinates hook
 2. Select multiple areas
 3. Call clearAllAreas()
 4. Canvas still shows selected areas
@@ -75,8 +75,8 @@ We love hearing about new ideas! When suggesting a feature:
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/your-username/react-dxf-viewer.git
-   cd react-dxf-viewer
+   git clone https://github.com/your-username/react-dxf-coordinates.git
+   cd react-dxf-coordinates
    ```
 
 3. **Install dependencies**:
@@ -103,7 +103,7 @@ We love hearing about new ideas! When suggesting a feature:
 ### Project Structure
 
 ```
-react-dxf-viewer/
+react-dxf-coordinates/
 ├── src/                    # Library source code
 │   ├── components/         # React components
 │   ├── hooks/             # Custom hooks
@@ -125,7 +125,7 @@ We use [Biome](https://biomejs.dev/) for linting and formatting. Please ensure y
 - **TypeScript**: All code should be written in TypeScript
 - **Functional components**: Use functional components with hooks
 - **Named exports**: Prefer named exports over default exports
-- **Interface naming**: Use PascalCase for interfaces (e.g., `DxfViewerProps`)
+- **Interface naming**: Use PascalCase for interfaces (e.g., `DxfCoordinatesProps`)
 - **File naming**: Use PascalCase for components, camelCase for utilities
 
 ### Formatting
@@ -255,8 +255,8 @@ All contributors will be recognized in our README.md and release notes. We appre
 
 ## 📄 License
 
-By contributing to React DXF Viewer, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing to React DXF Coordinates, you agree that your contributions will be licensed under the [MIT License](LICENSE).
 
 ---
 
-Thank you for contributing to React DXF Viewer! 🎉
+Thank you for contributing to React DXF Coordinates! 🎉

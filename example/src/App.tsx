@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { DxfViewer, useDxfViewer } from 'react-dxf-viewer'
+import { DxfCoordinates, useDxfCoordinates } from 'react-dxf-coordinates'
 
 function App() {
   const [file, setFile] = useState<File | null>(null)
-  const dxfState = useDxfViewer()
+  const dxfState = useDxfCoordinates()
   console.log(dxfState.areas)
 
   return (
@@ -16,7 +16,7 @@ function App() {
           setFile(file)
         }}
       />
-      <DxfViewer file={file} controller={dxfState} />
+      <DxfCoordinates file={file} controller={dxfState} />
     </>
   )
 }

@@ -1,8 +1,8 @@
-# React DXF Viewer
+# React DXF Coordinates
 
 <div align="center">
 
-[![npm version](https://badge.fury.io/js/react-dxf-viewer.svg)](https://badge.fury.io/js/react-dxf-viewer) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://reactjs.org/)
+[![npm version](https://badge.fury.io/js/react-dxf-coordinates.svg)](https://badge.fury.io/js/react-dxf-coordinates) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://reactjs.org/)
 
 
 **A powerful, lightweight React component for viewing DXF files with interactive area selection and coordinate extraction.**
@@ -18,33 +18,33 @@
 - 🎯 **Interactive Area Selection** - Click and drag to select areas on DXF drawings
 - 📍 **Real-time Coordinate Tracking** - Get mouse coordinates as you move
 - ⚡ **TypeScript Support** - Built with TypeScript for type safety
-- 🪝 **Custom Hooks** - Powerful `useDxfViewer` hook for state management
+- 🪝 **Custom Hooks** - Powerful `useDxfCoordinates` hook for state management
 - 🔧 **Zero Dependencies** - Lightweight with minimal external dependencies
 - 🚀 **Performance Optimized** - Smooth interactions even with complex drawings
 
 ## 🚀 Installation
 
 ```bash
-npm install react-dxf-viewer
+npm install react-dxf-coordinates
 ```
 
 ```bash
-yarn add react-dxf-viewer
+yarn add react-dxf-coordinates
 ```
 
 ```bash
-pnpm add react-dxf-viewer
+pnpm add react-dxf-coordinates
 ```
 
 ## ⚡ Quick Start
 
 ```tsx
 import React from 'react'
-import { DxfViewer, useDxfViewer } from 'react-dxf-viewer'
+import { DxfCoordinates, useDxfCoordinates } from 'react-dxf-coordinates'
 
 function App() {
   const [file, setFile] = useState<File | null>(null)
-  const dxfState = useDxfViewer()
+  const dxfState = useDxfCoordinates()
 
   console.log(dxfState.areas)
 
@@ -59,7 +59,7 @@ function App() {
         }}
       />
 
-      <DxfViewer file={file} controller={dxfState} />
+      <DxfCoordinates file={file} controller={dxfState} />
     </div>
   )
 }
@@ -71,7 +71,7 @@ export default App
 
 ### Components
 
-#### `<DxfViewer />`
+#### `<DxfCoordinates />`
 
 The main component for rendering DXF files with interactive capabilities.
 
@@ -80,19 +80,19 @@ The main component for rendering DXF files with interactive capabilities.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `file` | `File` | **required** | `.dxf` file
-| `controller` | `UseDxfViewerReturn` | **required** | Controller object from `useDxfViewer` hook |
+| `controller` | `UseDxfCoordinatesReturn` | **required** | Controller object from `useDxfCoordinates` hook |
 | `hasToolBar` | `boolean` | `true` | Show toolbar |
 
 ### Hooks
 
-#### `useDxfViewer()`
+#### `useDxfCoordinates()`
 
-A powerful hook that provides state management and controls for the DXF viewer.
+A powerful hook that provides state management and controls for the DXF coordinates.
 
 **Returns:**
 
 ```typescript
-type DxfViewerHook = {
+type DxfCoordinatesHook = {
   mode: Mode
   setMode: React.Dispatch<React.SetStateAction<Mode>>
   areas: Area[]
@@ -120,14 +120,14 @@ interface Area {
 ### Basic Usage
 
 ```tsx
-import { DxfViewer, useDxfViewer } from 'react-dxf-viewer'
+import { DxfCoordinates, useDxfCoordinates } from 'react-dxf-coordinates'
 
 function BasicExample() {
   const [file, setFile] = useState<File | null>(null)
-  const dxfState = useDxfViewer()
+  const dxfState = useDxfCoordinates()
 
   return (
-    <DxfViewer file={file} controller={dxfState} />
+    <DxfCoordinates file={file} controller={dxfState} />
   )
 }
 ```
@@ -142,8 +142,8 @@ function BasicExample() {
 ### Setting up development environment
 
 ```bash
-git clone https://github.com/CreamCheese-Ja/react-dxf-viewer.git
-cd react-dxf-viewer
+git clone https://github.com/CreamCheese-Ja/react-dxf-coordinates.git
+cd react-dxf-coordinates
 npm install
 ```
 
@@ -182,7 +182,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Reporting Issues
 
-Please use the [GitHub Issues](https://github.com/CreamCheese-Ja/react-dxf-viewer/issues) page to report bugs or request features.
+Please use the [GitHub Issues](https://github.com/CreamCheese-Ja/react-dxf-coordinates/issues) page to report bugs or request features.
 
 ## 📝 License
 
@@ -196,16 +196,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Stats
 
-![GitHub stars](https://img.shields.io/github/stars/CreamCheese-Ja/react-dxf-viewer?style=social)
-![GitHub forks](https://img.shields.io/github/forks/CreamCheese-Ja/react-dxf-viewer?style=social)
-![GitHub issues](https://img.shields.io/github/issues/CreamCheese-Ja/react-dxf-viewer)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/CreamCheese-Ja/react-dxf-viewer)
+![GitHub stars](https://img.shields.io/github/stars/CreamCheese-Ja/react-dxf-coordinates?style=social)
+![GitHub forks](https://img.shields.io/github/forks/CreamCheese-Ja/react-dxf-coordinates?style=social)
+![GitHub issues](https://img.shields.io/github/issues/CreamCheese-Ja/react-dxf-coordinates)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/CreamCheese-Ja/react-dxf-coordinates)
 
 ---
 
 <div align="center">
 
-**[⬆ Back to Top](#react-dxf-viewer)**
+**[⬆ Back to Top](#react-dxf-coordinates)**
 
 Made with ❤️ by [CreamCheese-Ja](https://github.com/CreamCheese-Ja)
 

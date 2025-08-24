@@ -1,5 +1,5 @@
-export { DxfViewer } from './components/DxfViewer'
-export { useDxfViewer } from './hooks/useDxfViewer'
+export { DxfCoordinates } from './components/DxfCoordinates'
+export { useDxfCoordinates } from './hooks/useDxfCoordinates'
 
-export type { DxfViewerHook } from './hooks/useDxfViewer'
-export type { Area, DxfViewerProps, Mode } from './types'
+export type { DxfCoordinatesHook } from './hooks/useDxfCoordinates'
+export type { Area, DxfCoordinatesProps, Mode } from './types'

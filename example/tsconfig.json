@@ -14,10 +14,10 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "react-dxf-viewer": ["../src"],
-      "react-dxf-viewer/*": ["../src/*"]
-      // "react-dxf-viewer": ["../dist"],
-      // "react-dxf-viewer/*": ["../dist/*"]
+      "react-dxf-coordinates": ["../src"],
+      "react-dxf-coordinates/*": ["../src/*"]
+      // "react-dxf-coordinates": ["../dist"],
+      // "react-dxf-coordinates/*": ["../dist/*"]
     }
   },
   "include": ["src", "../src", "../dist"]
