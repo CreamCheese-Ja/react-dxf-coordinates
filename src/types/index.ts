@@ -22,6 +22,7 @@ export interface DXFEntity {
   scaleY?: number
   scaleZ?: number
   rotationAngle?: number
+  position?: Point
 }
 
 export interface DXFHeader {

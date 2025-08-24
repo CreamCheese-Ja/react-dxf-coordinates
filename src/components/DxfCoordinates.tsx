@@ -33,7 +33,7 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
   const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
 
   const parseDXF = useCallback((content: string): DXFData => {
-    const lines = content.split('\n').map((line) => line.trim())
+    const lines = content.split(/\r?\n/).map((line) => line.trim())
     const entities: DXFEntity[] = []
     const blocks: Record<string, DXFBlock> = {}
 
@@ -141,7 +141,10 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
           line === 'CIRCLE' ||
           line === 'TEXT' ||
           line === 'MTEXT' ||
-          line === 'POLYLINE')
+          line === 'POLYLINE' ||
+          line === 'LWPOLYLINE' ||
+          line === 'POINT' ||
+          line === 'DIMENSION')
       ) {
         if (line === 'LINE') {
           const entity: DXFEntity = {
@@ -277,6 +280,80 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
             }
           }
 
+          currentBlock.entities.push(entity)
+          continue
+        }
+
+        if (line === 'LWPOLYLINE') {
+          const entity: DXFEntity = {
+            type: 'LWPOLYLINE',
+            layer: '0',
+            vertices: [],
+          }
+          i++
+          while (i < lines.length && lines[i] !== '0') {
+            const code = Number.parseInt(lines[i])
+            const value = lines[i + 1]
+            if (code === 8) entity.layer = value
+            if (code === 10) {
+              const x = Number.parseFloat(value)
+              const yCodeIdx = i + 2
+              if (Number.parseInt(lines[yCodeIdx]) === 20) {
+                const y = Number.parseFloat(lines[yCodeIdx + 1])
+                entity.vertices?.push({ x, y })
+              }
+            }
+            i += 2
+          }
+          entities.push(entity)
+          continue
+        }
+
+        if (line === 'POINT') {
+          const entity: DXFEntity = {
+            type: 'POINT',
+            layer: '0',
+            position: { x: 0, y: 0 },
+          }
+          i++
+          while (i < lines.length && lines[i] !== '0') {
+            const code = Number.parseInt(lines[i])
+            const value = lines[i + 1]
+            if (code === 10 && entity.position)
+              entity.position.x = Number.parseFloat(value)
+            if (code === 20 && entity.position)
+              entity.position.y = Number.parseFloat(value)
+            if (code === 8) entity.layer = value
+            i += 2
+          }
+          currentBlock.entities.push(entity)
+          continue
+        }
+
+        if (line === 'DIMENSION') {
+          const entity: DXFEntity = {
+            type: 'DIMENSION',
+            layer: '0',
+            start: { x: 0, y: 0 },
+            end: { x: 0, y: 0 },
+            text: '',
+          }
+          i++
+          while (i < lines.length && lines[i] !== '0') {
+            const code = Number.parseInt(lines[i])
+            const value = lines[i + 1]
+            if (code === 10 && entity.start)
+              entity.start.x = Number.parseFloat(value)
+            if (code === 20 && entity.start)
+              entity.start.y = Number.parseFloat(value)
+            if (code === 11 && entity.end)
+              entity.end.x = Number.parseFloat(value)
+            if (code === 21 && entity.end)
+              entity.end.y = Number.parseFloat(value)
+            if (code === 1) entity.text = value
+            if (code === 8) entity.layer = value
+            i += 2
+          }
           currentBlock.entities.push(entity)
           continue
         }
@@ -418,6 +495,77 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
         continue
       }
 
+      if (inEntitiesSection && line === 'LWPOLYLINE') {
+        const entity: DXFEntity = {
+          type: 'LWPOLYLINE',
+          layer: '0',
+          vertices: [],
+        }
+        i++
+        while (i < lines.length && lines[i] !== '0') {
+          const code = Number.parseInt(lines[i])
+          const value = lines[i + 1]
+          if (code === 8) entity.layer = value
+          if (code === 10) {
+            const x = Number.parseFloat(value)
+            const y = Number.parseFloat(lines[i + 3])
+            entity.vertices?.push({ x, y })
+            i += 4
+            continue
+          }
+          i += 2
+        }
+        entities.push(entity)
+        continue
+      }
+
+      if (inEntitiesSection && line === 'POINT') {
+        const entity: DXFEntity = {
+          type: 'POINT',
+          layer: '0',
+          position: { x: 0, y: 0 },
+        }
+        i++
+        while (i < lines.length && lines[i] !== '0') {
+          const code = Number.parseInt(lines[i])
+          const value = lines[i + 1]
+          if (code === 10 && entity.position)
+            entity.position.x = Number.parseFloat(value)
+          if (code === 20 && entity.position)
+            entity.position.y = Number.parseFloat(value)
+          if (code === 8) entity.layer = value
+          i += 2
+        }
+        entities.push(entity)
+        continue
+      }
+
+      if (inEntitiesSection && line === 'DIMENSION') {
+        const entity: DXFEntity = {
+          type: 'DIMENSION',
+          layer: '0',
+          start: { x: 0, y: 0 },
+          end: { x: 0, y: 0 },
+          text: '',
+        }
+        i++
+        while (i < lines.length && lines[i] !== '0') {
+          const code = Number.parseInt(lines[i])
+          const value = lines[i + 1]
+          if (code === 10 && entity.start)
+            entity.start.x = Number.parseFloat(value)
+          if (code === 20 && entity.start)
+            entity.start.y = Number.parseFloat(value)
+          if (code === 11 && entity.end) entity.end.x = Number.parseFloat(value)
+          if (code === 21 && entity.end) entity.end.y = Number.parseFloat(value)
+          if (code === 1) entity.text = value
+          if (code === 8) entity.layer = value
+          i += 2
+        }
+        entities.push(entity)
+        continue
+      }
+
       i++
     }
 
@@ -532,6 +680,23 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
           maxX = Math.max(maxX, vertex.x)
           maxY = Math.max(maxY, vertex.y)
         }
+      } else if (entity.type === 'LWPOLYLINE' && entity.vertices) {
+        for (const vertex of entity.vertices) {
+          minX = Math.min(minX, vertex.x)
+          minY = Math.min(minY, vertex.y)
+          maxX = Math.max(maxX, vertex.x)
+          maxY = Math.max(maxY, vertex.y)
+        }
+      } else if (entity.type === 'POINT' && entity.position) {
+        minX = Math.min(minX, entity.position.x)
+        minY = Math.min(minY, entity.position.y)
+        maxX = Math.max(maxX, entity.position.x)
+        maxY = Math.max(maxY, entity.position.y)
+      } else if (entity.type === 'DIMENSION' && entity.start && entity.end) {
+        minX = Math.min(minX, entity.start.x, entity.end.x)
+        minY = Math.min(minY, entity.start.y, entity.end.y)
+        maxX = Math.max(maxX, entity.start.x, entity.end.x)
+        maxY = Math.max(maxY, entity.start.y, entity.end.y)
       } else if (
         (entity.type === 'TEXT' || entity.type === 'MTEXT') &&
         entity.start
@@ -730,6 +895,23 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
                 }
                 ctx.stroke()
               } else if (
+                blockEntity.type === 'LWPOLYLINE' &&
+                blockEntity.vertices &&
+                blockEntity.vertices.length > 0
+              ) {
+                ctx.beginPath()
+                ctx.moveTo(
+                  blockEntity.vertices[0].x * scale,
+                  -blockEntity.vertices[0].y * scale,
+                )
+                for (let i = 1; i < blockEntity.vertices.length; i++) {
+                  ctx.lineTo(
+                    blockEntity.vertices[i].x * scale,
+                    -blockEntity.vertices[i].y * scale,
+                  )
+                }
+                ctx.stroke()
+              } else if (
                 (blockEntity.type === 'TEXT' || blockEntity.type === 'MTEXT') &&
                 blockEntity.start &&
                 blockEntity.text
@@ -789,6 +971,40 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
             ctx.lineTo(vertex.x, vertex.y)
           }
           ctx.stroke()
+        } else if (
+          entity.type === 'LWPOLYLINE' &&
+          entity.vertices &&
+          entity.vertices.length > 0
+        ) {
+          ctx.beginPath()
+          const firstVertex = worldToScreen(entity.vertices[0])
+          ctx.moveTo(firstVertex.x, firstVertex.y)
+          for (let i = 1; i < entity.vertices.length; i++) {
+            const vertex = worldToScreen(entity.vertices[i])
+            ctx.lineTo(vertex.x, vertex.y)
+          }
+          ctx.stroke()
+        } else if (entity.type === 'POINT' && entity.position) {
+          const posScreen = worldToScreen(entity.position)
+          ctx.beginPath()
+          ctx.arc(posScreen.x, posScreen.y, 4, 0, 2 * Math.PI)
+          ctx.fill()
+        } else if (entity.type === 'DIMENSION' && entity.start && entity.end) {
+          const startScreen = worldToScreen(entity.start)
+          const endScreen = worldToScreen(entity.end)
+          ctx.beginPath()
+          ctx.moveTo(startScreen.x, startScreen.y)
+          ctx.lineTo(endScreen.x, endScreen.y)
+          ctx.stroke()
+          if (entity.text) {
+            ctx.font = '12px Arial'
+            ctx.fillStyle = '#333'
+            ctx.fillText(
+              entity.text,
+              (startScreen.x + endScreen.x) / 2,
+              (startScreen.y + endScreen.y) / 2,
+            )
+          }
         } else if (
           (entity.type === 'TEXT' || entity.type === 'MTEXT') &&
           entity.start &&
@@ -996,7 +1212,7 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
     }
   }, [scale, offset, selectionAreas.length, screenToWorld])
 
-  const loadDxfFromStore = useCallback(async () => {
+  const loadDxf = useCallback(async () => {
     if (!file) return
 
     try {
@@ -1031,8 +1247,8 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
   }, [parseDXF, calculateBounds, file])
 
   useEffect(() => {
-    loadDxfFromStore()
-  }, [loadDxfFromStore])
+    loadDxf()
+  }, [loadDxf])
 
   const getMousePos = (event: React.MouseEvent<HTMLCanvasElement>): Point => {
     const canvas = canvasRef.current
@@ -1211,26 +1427,6 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
     setIsResizing(false)
     setResizeHandle(null)
   }
-
-  // const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-  //   if (selectionAreas.length > 0) return
-
-  //   event.preventDefault()
-  //   const mousePos = getMousePos(event)
-  //   const worldPos = screenToWorld(mousePos)
-
-  //   const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
-  //   const newScale = Math.max(0.1, Math.min(10, scale * scaleFactor))
-
-  //   const newWorldPos = screenToWorld(mousePos)
-  //   const newOffset = {
-  //     x: offset.x + (worldPos.x - newWorldPos.x),
-  //     y: offset.y + (worldPos.y - newWorldPos.y),
-  //   }
-
-  //   setScale(newScale)
-  //   setOffset(newOffset)
-  // }
 
   const getCursorStyle = () => {
     if (mode === 'pan') {
