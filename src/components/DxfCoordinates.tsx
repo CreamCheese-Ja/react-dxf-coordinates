@@ -1175,16 +1175,15 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
       if (selectionAreas.length > 0) return
 
       event.preventDefault()
-      const rect = canvas.getBoundingClientRect()
-      const scaleX = canvas.width / rect.width
-      const scaleY = canvas.height / rect.height
+      const canvas = canvasRef.current
+      if (!canvas) return
 
-      const mousePos = {
-        x: (event.clientX - rect.left) * scaleX,
-        y: (event.clientY - rect.top) * scaleY,
+      // キャンバス中央を拡大縮小の基準にする
+      const centerScreen = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
       }
-
-      const worldPos = screenToWorld(mousePos)
+      const worldPos = screenToWorld(centerScreen)
 
       const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1
       const newScale = Math.max(0.1, Math.min(10, scale * scaleFactor))
@@ -1193,8 +1192,8 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
 
       // スケール変更後の新しいワールド座標を計算
       const newWorldPos = {
-        x: (mousePos.x - canvas.width / 2) / newScale - offset.x,
-        y: -((mousePos.y - canvas.height / 2) / newScale) - offset.y,
+        x: (centerScreen.x - canvas.width / 2) / newScale - offset.x,
+        y: -((centerScreen.y - canvas.height / 2) / newScale) - offset.y,
       }
 
       const newOffset = {
@@ -1478,14 +1477,14 @@ export const DxfCoordinates: FC<DxfCoordinatesProps> = ({
                 onClick={() => setMode('pan')}
                 className={`${styles.button} ${mode === 'pan' ? styles.buttonActive : ''}`}
               >
-                移動
+                pan
               </button>
               <button
                 type='button'
                 onClick={() => setMode('select')}
                 className={`${styles.button} ${mode === 'select' ? styles.buttonActive : ''}`}
               >
-                選択
+                select
               </button>
             </div>
             {file && !!selectionAreas.length && (
